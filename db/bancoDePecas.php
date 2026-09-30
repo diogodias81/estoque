@@ -1,6 +1,7 @@
 <?php
 session_start();
 //fazer validacao de int
+
 if (!isset($_SESSION['listaPecas'])) {
     $_SESSION['listaPecas'] = [];
 }
@@ -43,5 +44,10 @@ if (isset($_POST) && count($_POST) > 0) {
             'quantidade' => $_POST['quantidade']
         ];
     }
+}
+if (isset($_GET['indice']) && is_numeric($_GET['indice']) && isset($_GET['deletar'])) {
+    $indice = $_GET['indice'];
+
+    unset($_SESSION['listaPecas'][$indice]);
 }
 echo json_encode($_SESSION['listaPecas']);

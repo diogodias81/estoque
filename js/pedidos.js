@@ -1,13 +1,14 @@
-let produto = document.querySelector('#produto')
+let pecas = document.querySelector('#pecas')
 let quantidadePedida = document.querySelector('#quantidadePecas')
 let listaPedidos = document.querySelector('#lista-pedidos')
 let indice = document.querySelector('#indice')
 
 
-function carregarProdutos() {
-    fetch('../db/bancoDeProdutos.php')
+function carregarpecass() {
+    fetch('../db/bancoDePecas.php')
     .then(resposta => resposta.json())
     .then(resposta=> {
+        
         let listaHTML = '<option value="">SELECIONE...</option>';
         
             for(let i= 0; i < resposta.length; i++){
@@ -17,13 +18,13 @@ function carregarProdutos() {
                                 </option>`
             }
 
-            produto.innerHTML = listaHTML;
+            pecas.innerHTML = listaHTML;
             
         });
 }
 
 function carregarPedidos(){
-    fetch('../db/bancoDePedidos.php')
+    fetch("../db/bancoDePedidos.php?acao=C")
     .then(resposta => resposta.json())
     .then(resposta => {
             let listaHTML = '';
@@ -31,8 +32,8 @@ function carregarPedidos(){
             for(let i= 0; i < resposta.length; i++){
                 listaHTML+= `<p>
                 quantidade:${resposta[i].quantidade}<br> 
-                nome: ${resposta[i].nome_produto} <br>
-                codigo: (${resposta[i].codigo_produto})</p>`
+                nome: ${resposta[i].nome_pecas} <br>
+                codigo: (${resposta[i].codigo_pecas})</p>`
             }
 
             listaPedidos.innerHTML = listaHTML;
@@ -42,11 +43,11 @@ function carregarPedidos(){
 
 function adicionarPedido(){
     fetch('../db/bancoDePedidos.php',{
-    method:'POST',
-        headers:{
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: `codigoProduto=${produto.value}&quantidade=${quantidadePedida.value}`
+        method:'POST',
+            headers:{
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: `acao=I&codigopecas=${pecas.value}&quantidade=${quantidadePedida.value}`
         })
         .then(r => r.json())
         .then(r => {
@@ -60,10 +61,10 @@ function adicionarPedido(){
 
             
             carregarPedidos();
-            carregarProdutos();
+            carregarpecass();
         }
     })
 }
 
-carregarProdutos();
+carregarpecass();
 carregarPedidos();

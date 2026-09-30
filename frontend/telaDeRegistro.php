@@ -15,7 +15,7 @@
         <div>
             <label>Prouto:</label>
             <br>
-            <select id="produto"></select>
+            <select id="pecas"></select>
         </div>
         <div>
             <label>Quantidade:</label>
@@ -32,7 +32,7 @@
 
     </form>
 
-    <a href="telaDeProdutos.php">voltar</a>
+    <a href="telaDePecas.php">voltar</a>
     
     <script src="../js/pedidos.js"></script>
 

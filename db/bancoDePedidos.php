@@ -2,47 +2,30 @@
 
 session_start();
 
+
+require '../servicos/PedidosDB.php';
+
+
 if (!isset($_SESSION['listaPedidos'])) {
     $_SESSION['listaPedidos'] = [];
 }
 
-if (!isset($_SESSION['listaPecas'])) {
-    $_SESSION['listaPecas'] = [];
+
+//instancio a classe e crio o
+$oPedido = new Pedidos();
+
+
+if(isset($_REQUEST['acao']) && $_REQUEST['acao'] == 'C') {
+    echo $oPedido->listarPedidos();
 }
 
-if (isset($_POST) && count($_POST) > 0) {
 
-    // Percorrendo a lista de produtos
-    for ($i = 0; $i < count($_SESSION['listaPecas']); $i++) {
-
-        // Verificando se o código do produto é igual ao código enviado
-        if ($_SESSION['listaPecas'][$i]['codigo'] == $_POST['codigoProduto']) {
-
-            // Verificando se existe estoque suficiente
-            if ($_POST['quantidade'] <= $_SESSION['listaPecas'][$i]['quantidade']) {
-
-                // Adicionando o pedido
-                $_SESSION['listaPedidos'][] = [
-                    'codigo_produto' => $_POST['codigoProduto'],
-                    'nome_produto' => $_SESSION['listaPecas'][$i]['nome'],
-                    'quantidade' => $_POST['quantidade']
-                ];
-
-                // Atualizando a quantidade do produto
-                $_SESSION['listaPecas'][$i]['quantidade'] =
-                    $_SESSION['listaPecas'][$i]['quantidade'] - $_POST['quantidade'];
-
-                die(json_encode([
-                    'mensagem' => 'Item adicionado com sucesso'
-                ]));
-            } else {
-
-                die(json_encode([
-                    'info' => 'Quantidade maior que o estoque'
-                ]));
-            }
-        }
-    }
+if(isset($_REQUEST['acao']) && $_REQUEST['acao'] == 'I') {
+    $oPedido->adicionarPedido();
 }
 
-echo json_encode($_SESSION['listaPedidos']);
+
+
+
+
+

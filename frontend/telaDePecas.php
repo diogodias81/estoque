@@ -40,6 +40,6 @@
             <a href="telaDeRegistro.php">Pedidos</a>
 
     </div>
-    <script src="../js/produtos.js"></script>
+    <script src="../js/pecas.js"></script>
 </body>
 </html>
