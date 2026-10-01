@@ -24,6 +24,12 @@ if(isset($_REQUEST['acao']) && $_REQUEST['acao'] == 'I') {
     $oPedido->adicionarPedido();
 }
 
+if(isset($_REQUEST['acao']) && $_REQUEST['acao'] == 'D') {
+    $oPedido->deletarPedido();
+    echo json_encode(['mensagem' => 'Pedido removida com sucesso']);
+}
+
+
 
 
 

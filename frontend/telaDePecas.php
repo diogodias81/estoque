@@ -12,8 +12,8 @@
         <div class="card">
             
             <form>
-
                 <input type="hidden" id="indice">
+
                 <div>
                     <label>codigo:</label>
                     <input type="number" id="codigoPeca">

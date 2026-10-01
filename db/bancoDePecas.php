@@ -1,53 +1,30 @@
 <?php
 session_start();
 //fazer validacao de int
+require '../servicos/pecasDB.php';
+
+// unset($_SESSION['listaPecas']);
 
 if (!isset($_SESSION['listaPecas'])) {
     $_SESSION['listaPecas'] = [];
 }
 
-if (isset($_POST) && count($_POST) > 0) {
+$oPecas = new  Pecas();
 
-    if (!$_POST['codigo']) {
-        die(json_encode(['mensagem' => 'O campo Código é obrigatório']));
-    }
-
-    if (!$_POST['nome']) {
-        die(json_encode(['mensagem' => 'O campo Nome é obrigatório']));
-    }
-
-    if (!$_POST['quantidade']) {
-        die(json_encode(['mensagem' => 'O campo Quantidade é obrigatório']));
-    }
-
-    if ((int)$_POST['quantidade'] != $_POST['quantidade']) {
-        die(json_encode([
-            'mensagem' => 'A quantidade deve ser um número inteiro'
-        ]));
-    }
-    if ((int)$_POST['codigo'] != $_POST['codigo']) {
-        die(json_encode([
-            'mensagem' => 'O codigo deve ser um número inteiro'
-        ]));
-    }
-
-
-    if (isset($_POST['indice']) && is_numeric($_POST['indice'])) {
-        $indice = $_POST['indice'];
-        $_SESSION['listaPecas'][$indice]['codigo'] = $_POST['codigo'];
-        $_SESSION['listaPecas'][$indice]['nome'] = $_POST['nome'];
-        $_SESSION['listaPecas'][$indice]['quantidade'] = $_POST['quantidade'];
-    } else {
-        $_SESSION['listaPecas'][] = [
-            'codigo'     => $_POST['codigo'],
-            'nome'       => $_POST['nome'],
-            'quantidade' => $_POST['quantidade']
-        ];
-    }
+if(isset($_REQUEST['acao']) && $_REQUEST['acao'] == 'C') {
+    echo $oPecas->listarPecas();
 }
-if (isset($_GET['indice']) && is_numeric($_GET['indice']) && isset($_GET['deletar'])) {
-    $indice = $_GET['indice'];
 
-    unset($_SESSION['listaPecas'][$indice]);
+
+if(isset($_REQUEST['acao']) && $_REQUEST['acao'] == 'I') {
+    $oPecas->adicionarPecas();
+
+    echo json_encode(['mensagem' => 'Peça cadastrada com sucesso']);
 }
-echo json_encode($_SESSION['listaPecas']);
+
+
+if(isset($_REQUEST['acao']) && $_REQUEST['acao'] == 'D') {
+    $oPecas->deletarPeca();
+
+    echo json_encode(['mensagem' => 'Peça removida com sucesso']);
+}

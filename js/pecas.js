@@ -6,29 +6,29 @@ let resultado = document.querySelector('#resultado');
 
 
 function carregarPecas(){
-    fetch('../db/bancoDePecas.php')
+    fetch('../db/bancoDePecas.php?acao=C')
         .then(resposta => resposta.json())
         .then(resposta => {
 
             let listaHTML = '';
 
-            let chaves = Object.keys(resposta);
+            // let chaves = Object.keys(resposta);
 
-            for(let i = 0; i < chaves.length; i++){
+            for(let i = 0; i < resposta.length; i++){
 
-                let indicePeca = chaves[i];
+                // let indicePeca = chaves[i];
 
                 listaHTML += `
                     <div>
                         <p>
-                            Nome: ${resposta[indicePeca].nome}<br>
-                            Código: ${resposta[indicePeca].codigo}<br>
-                            Quantidade: ${resposta[indicePeca].quantidade}
+                            Nome: ${resposta[i].nome}<br>
+                            Código: ${resposta[i].codigo}<br>
+                            Quantidade: ${resposta[i].quantidade}
                         </p>
                         <button type="button"
-                            onclick="editarPeca(${indicePeca},${resposta[indicePeca].codigo},'${resposta[indicePeca].nome}',${resposta[indicePeca].quantidade})">Editar   </button>
+                            onclick="editarPeca(${i},${resposta[i].codigo},'${resposta[i].nome}',${resposta[i].quantidade})">Editar   </button>
                         <button type="button"
-                            onclick="deletarPeca(${indicePeca})">
+                            onclick="deletarPeca(${i})">
                             Deletar
                         </button>
                     </div>
@@ -41,12 +41,12 @@ function carregarPecas(){
 
 
 function adicionarPeca(){
-    fetch('../db/bancoDePecas.php',{
+    fetch('../db/bancoDePecas.php?acao=C',{
         method:'POST',
         headers:{
             "Content-Type": "application/x-www-form-urlencoded"
         },
-        body:`codigo=${codigo.value}&nome=${nome.value}&quantidade=${quantidade.value}&indice=${indice.value}`
+        body:`acao=I&codigo=${codigo.value}&nome=${nome.value}&quantidade=${quantidade.value}&indice=${indice.value}`
     })
     .then(r => r.json())
     .then(r => {
@@ -75,9 +75,13 @@ function editarPeca(indiceEditado, codigoEditado, nomeEditado, quantidadeEditada
 
 
 function deletarPeca(indice) {
-    fetch(`../db/bancoDePecas.php?indice=${indice}&deletar=DELETE`)
+    fetch(`../db/bancoDePecas.php?indice=${indice}&acao=D`)
         .then(resposta => resposta.json())
         .then(resposta => {
+            if(resposta.mensagem) {
+                alert(resposta.mensagem);
+            }
+            
             carregarPecas();
         });
 }

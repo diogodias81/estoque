@@ -50,9 +50,13 @@ class Pedidos {
 
     }
 
-    public function excluir() 
+    public function deletarPedido() 
     {
-
+         if (isset($_GET['indice']) && is_numeric($_GET['indice'])) {
+            $indice = $_GET['indice'];
+            // echo'<pre>'; print_r($_SESSION['listaPecas'][$indice]); die;
+            array_splice($_SESSION['listaPedidos'], $indice, 1);
+        }
     }
 }
 
